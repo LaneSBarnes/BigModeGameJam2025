@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://gq416d1xdja1"]
+[gd_scene load_steps=6 format=3 uid="uid://gq416d1xdja1"]
 
 [ext_resource type="Script" path="res://panel_power_output.gd" id="1_7ickq"]
 [ext_resource type="Script" path="res://sun.gd" id="2_5fimb"]
-[ext_resource type="PackedScene" uid="uid://dg4aarxyletqx" path="res://bug.tscn" id="3_71nmu"]
+[ext_resource type="Script" path="res://solar_charge_display.gd" id="4_71gyu"]
+[ext_resource type="Script" path="res://battery_storage.gd" id="4_trtno"]
+[ext_resource type="Script" path="res://sun_display.gd" id="5_1ug7p"]
 
 [node name="Test Scene" type="Node2D"]
 
@@ -12,8 +14,31 @@ script = ExtResource("2_5fimb")
 
 [node name="Solar Panel" type="Node2D" parent="."]
 
-[node name="Power Output" type="Node" parent="Solar Panel"]
+[node name="Panel Power Output" type="Node" parent="Solar Panel"]
 script = ExtResource("1_7ickq")
+efficiency = 2
+capacity = 0.5
 
-[node name="Bug" parent="." instance=ExtResource("3_71nmu")]
-position = Vector2(348, 338)
+[node name="Battery" type="Node2D" parent="."]
+
+[node name="Battery Storage" type="Node" parent="Battery" node_paths=PackedStringArray("input")]
+script = ExtResource("4_trtno")
+charge_rate = 1.0
+input = NodePath("../../Solar Panel/Panel Power Output")
+
+[node name="ChargeDisplay" type="Node2D" parent="." node_paths=PackedStringArray("input")]
+position = Vector2(496, 318)
+script = ExtResource("4_71gyu")
+input = NodePath("../Solar Panel/Panel Power Output")
+color = Color(0.31321, 0.522067, 1, 1)
+
+[node name="ChargeDisplay2" type="Node2D" parent="." node_paths=PackedStringArray("input")]
+position = Vector2(684, 317)
+script = ExtResource("4_71gyu")
+input = NodePath("../Battery/Battery Storage")
+color = Color(0.658824, 0.976471, 0, 1)
+
+[node name="SunDisplay" type="Node2D" parent="."]
+position = Vector2(316, 318)
+script = ExtResource("5_1ug7p")
+color = Color(1, 0.54902, 0, 1)
