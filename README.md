@@ -1,4 +1,4 @@
-# Power Management Tower Defense
+# Zippy Zap Tower Defense
 ## Game Design Document
 Version 1.0 - Game Jam Edition
 
