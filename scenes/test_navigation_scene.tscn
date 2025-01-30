@@ -20,13 +20,22 @@ navigation_polygon = SubResource("NavigationPolygon_1")
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="Point1" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(-450, 0)
+position = Vector2(-1064, 6)
 
 [node name="Point2" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(0, -250)
+position = Vector2(-294, -489)
 
 [node name="Point3" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(450, 0)
+position = Vector2(810, -486)
+
+[node name="Point4" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(1018, 36)
+
+[node name="Point5" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(813, 588)
+
+[node name="Point6" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-395, 584)
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -36,6 +45,6 @@ autostart = true
 zoom = Vector2(0.5, 0.5)
 
 [node name="TestBug" parent="." instance=ExtResource("3_bug")]
-position = Vector2(-450, 0)
+position = Vector2(-966, 3)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

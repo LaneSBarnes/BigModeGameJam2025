@@ -57,11 +57,10 @@ func _physics_process(delta):
 		velocity = direction * current_speed
 		move_and_slide()
 		
-		# Update rotation to face movement direction
-		rotation = velocity.angle()
+		# Only rotate the sprite to face movement direction
+		if has_node("Sprite2D"):
+			$Sprite2D.rotation = velocity.angle()
 		
-		# Debug info
-		print("Moving - Position: ", global_position, " Next: ", next_position, " Dir: ", direction)
 	else:
 		print("No valid direction found")
 	
