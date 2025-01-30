@@ -144,7 +144,7 @@ A top-down tower defense game where players must manage power resources to defen
 
 ### Technical Considerations
 - Grid-based placement system
-- Pathfinding for enemies (A*)
+- Pathfinding for enemies 
 - Power distribution calculation
 - Wave spawning system
 - Day/night cycle timer
