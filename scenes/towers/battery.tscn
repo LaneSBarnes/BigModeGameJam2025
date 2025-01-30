@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4r7x8g5y2m6k"]
+
+[ext_resource type="Script" path="res://scenes/towers/battery.gd" id="1_b2p4t"]
+
+[sub_resource type="Gradient" id="Gradient_l5xks"]
+colors = PackedColorArray(0.4, 1, 0.2, 1, 0.6, 1, 0.4, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k7n2r"]
+gradient = SubResource("Gradient_l5xks")
+width = 64
+height = 64
+fill_from = Vector2(0, 1)
+
+[node name="Battery" type="Node2D"]
+script = ExtResource("1_b2p4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_k7n2r")

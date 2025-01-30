@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbn6rg0yjknx7"]
+
+[ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/player_base.tscn" id="2_base"]
+[ext_resource type="PackedScene" uid="uid://b8r7x8g5y2m6k" path="res://scenes/enemies/worker_bug.tscn" id="3_bug"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
+vertices = PackedVector2Array(-500, -300, 500, -300, 500, 300, -500, 300)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-500, -300, 500, -300, 500, 300, -500, 300)])
+
+[node name="TestNavigationScene" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_1")
+
+[node name="PlayerBase" parent="." instance=ExtResource("2_base")]
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="Point1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-450, 0)
+
+[node name="Point2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(0, -250)
+
+[node name="Point3" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(450, 0)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+
+[node name="TestBug" parent="." instance=ExtResource("3_bug")]
+position = Vector2(-450, 0)
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

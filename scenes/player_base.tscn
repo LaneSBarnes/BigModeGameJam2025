@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://dk7x8g5y2m6k"]
+
+[ext_resource type="Script" path="res://scenes/player_base.gd" id="1_base"]
+
+[sub_resource type="Gradient" id="Gradient_x5xks"]
+colors = PackedColorArray(0.2, 0.4, 0.8, 1, 0.4, 0.6, 1.0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_u7n2r"]
+gradient = SubResource("Gradient_x5xks")
+width = 128
+height = 128
+fill_from = Vector2(0, 0)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a8n2r"]
+radius = 64.0
+
+[node name="PlayerBase" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_base")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_u7n2r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_a8n2r")
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -60.0
+offset_top = -80.0
+offset_right = 60.0
+offset_bottom = -70.0
+show_percentage = false
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_a8n2r")
