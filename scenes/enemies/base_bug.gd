@@ -42,7 +42,7 @@ func _ready():
 
 	# IMPORTANT: Wait for the navigation to be ready
 	await get_tree().create_timer(0.1).timeout  # Add small delay
-	nav_agent.debug_enabled = true
+	#nav_agent.debug_enabled = true
 
 func _physics_process(delta):
 	if has_reached_base:
