@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dbn6rg0yjknx7"]
+[gd_scene load_steps=8 format=3 uid="uid://dbn6rg0yjknx7"]
 
 [ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/player_base.tscn" id="2_base"]
+[ext_resource type="PackedScene" uid="uid://dk7x8g5y2m6k" path="res://scenes/player_base.tscn" id="2_base"]
 [ext_resource type="PackedScene" uid="uid://cqxeekpeiqctp" path="res://scenes/ui/game_ui.tscn" id="2_mfq6i"]
-[ext_resource type="PackedScene" uid="uid://b8r7x8g5y2m6k" path="res://scenes/enemies/worker_bug.tscn" id="3_bug"]
 [ext_resource type="PackedScene" uid="uid://dw7x8g5y2m6k" path="res://scenes/ui/game_over.tscn" id="4_jtcuv"]
+[ext_resource type="Script" path="res://scripts/time_modulation.gd" id="6_m5ltl"]
+[ext_resource type="Script" path="res://scripts/day_night_manager.gd" id="6_vosdc"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
 vertices = PackedVector2Array(490, 290, -490, 290, -490, -290, 490, -290)
@@ -52,8 +53,10 @@ autostart = true
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.5, 0.5)
 
-[node name="TestBug" parent="." instance=ExtResource("3_bug")]
-visible = false
-position = Vector2(-966, 3)
+[node name="DayNightManager" type="Node" parent="."]
+script = ExtResource("6_vosdc")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+script = ExtResource("6_m5ltl")
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

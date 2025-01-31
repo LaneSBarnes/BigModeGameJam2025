@@ -25,6 +25,7 @@ var credits: int = 450  # Starting credits
 @onready var solar_power_label = $TopBar/HBoxContainer/PowerInfo/SolarPower/Value
 @onready var stored_power_label = $TopBar/HBoxContainer/PowerInfo/StoredPower/Value
 @onready var tower_buttons = $TowerPanel/VBoxContainer/TowerButtons
+@onready var day_night_manager = get_parent().get_node("DayNightManager")
 
 func _ready():
 	setup_tower_buttons()
@@ -115,8 +116,10 @@ func can_place_tower(tower: Node2D) -> bool:
 	# Add collision checking here
 	return true
 
+
 func _on_cycle_tick(time_remaining: float, is_day: bool):
-	time_progress.value = (1.0 - (time_remaining / (120.0))) * 100
+	var total_duration = day_night_manager.DAY_DURATION if is_day else day_night_manager.NIGHT_DURATION
+	time_progress.value = (1.0 - (time_remaining / total_duration)) * 100
 	time_progress.modulate = Color(0.2, 1.0, 0.2) if is_day else Color(0.2, 0.2, 1.0)
 
 func _on_day_started():
