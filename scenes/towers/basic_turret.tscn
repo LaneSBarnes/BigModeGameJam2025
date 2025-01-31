@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8r7x8g5y2m6k"]
+
+[ext_resource type="Script" path="res://scenes/towers/basic_turret.gd" id="1_t3p4t"]
+
+[sub_resource type="Gradient" id="Gradient_r5xks"]
+colors = PackedColorArray(1, 0.2, 0.2, 1, 1, 0.4, 0.4, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n7n2r"]
+gradient = SubResource("Gradient_r5xks")
+width = 64
+height = 64
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[node name="BasicTurret" type="Node2D"]
+script = ExtResource("1_t3p4t")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_n7n2r")
+
+[node name="Barrel" type="ColorRect" parent="."]
+offset_left = -4.0
+offset_top = -32.0
+offset_right = 4.0
+offset_bottom = 0.0
+color = Color(0.8, 0.2, 0.2, 1)

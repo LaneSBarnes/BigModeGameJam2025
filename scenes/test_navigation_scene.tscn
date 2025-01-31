@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://dbn6rg0yjknx7"]
+
+[ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/player_base.tscn" id="2_base"]
+[ext_resource type="PackedScene" uid="uid://cqxeekpeiqctp" path="res://scenes/ui/game_ui.tscn" id="2_mfq6i"]
+[ext_resource type="PackedScene" uid="uid://b8r7x8g5y2m6k" path="res://scenes/enemies/worker_bug.tscn" id="3_bug"]
+[ext_resource type="PackedScene" uid="uid://dw7x8g5y2m6k" path="res://scenes/ui/game_over.tscn" id="4_jtcuv"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
+vertices = PackedVector2Array(490, 290, -490, 290, -490, -290, 490, -290)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-500, -300, 500, -300, 500, 300, -500, 300)])
+
+[node name="TestNavigationScene" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="GameUI" parent="." instance=ExtResource("2_mfq6i")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOver" parent="CanvasLayer" instance=ExtResource("4_jtcuv")]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_1")
+
+[node name="PlayerBase" parent="." instance=ExtResource("2_base")]
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="Point1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-1064, 6)
+
+[node name="Point2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-294, -489)
+
+[node name="Point3" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(810, -486)
+
+[node name="Point4" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(1018, 36)
+
+[node name="Point5" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(813, 588)
+
+[node name="Point6" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-395, 584)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+
+[node name="TestBug" parent="." instance=ExtResource("3_bug")]
+visible = false
+position = Vector2(-966, 3)
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

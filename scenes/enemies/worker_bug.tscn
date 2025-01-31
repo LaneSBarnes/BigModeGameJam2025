@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8r7x8g5y2m6k"]
+
+[ext_resource type="Script" path="res://scenes/enemies/worker_bug.gd" id="1_w3p4t"]
+
+[sub_resource type="Gradient" id="Gradient_u5xks"]
+colors = PackedColorArray(0.8, 0.4, 0, 1, 1, 0.6, 0.2, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r7n2r"]
+gradient = SubResource("Gradient_u5xks")
+width = 32
+height = 32
+fill_from = Vector2(0, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="WorkerBug" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_w3p4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_r7n2r")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-16, -16, 16, 0, -16, 16)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+offset_left = -20.0
+offset_top = -24.0
+offset_right = 20.0
+offset_bottom = -20.0
+show_percentage = false
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
