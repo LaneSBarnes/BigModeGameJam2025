@@ -109,6 +109,8 @@ func _unhandled_input(event):
 				credits -= tower_costs[tower_name]
 				update_credits_display()
 				dragging_tower.modulate = Color.WHITE
+				var collision_shape = dragging_tower.get_node("CollisionShape2D")
+				collision_shape.disabled = false
 				# If this is a power-related tower, register it with the power manager
 				if dragging_tower.has_method("get_power_generation") or \
 					dragging_tower.has_method("get_power_storage"):
@@ -142,22 +144,32 @@ func can_place_tower(tower: Node2D) -> bool:
 	# Get physics world
 	var space = get_parent().get_world_2d().direct_space_state
 	
-	# Create overlap test
-	var params = PhysicsPointQueryParameters2D.new()
-	params.position = tower.global_position
-	params.collision_mask = 6  # Check for towers (4) and bugs (2)
+	# Use the tower's collision shape
+	var collision_shape = tower.get_node("CollisionShape2D")
+	if not collision_shape:
+		print("No collision shape found for tower")
+		return false
+	
+	# Temporarily disable the tower's collision
+	var original_disabled = collision_shape.disabled
+	collision_shape.disabled = true
+	
+	# Create overlap test using shape query
+	var params = PhysicsShapeQueryParameters2D.new()
+	params.shape = collision_shape.shape
+	params.transform = collision_shape.global_transform
+	params.collision_mask = 14  # Towers (4) + Base (3) + Bugs (2) = 14
 	params.collide_with_areas = true
 	params.collide_with_bodies = true
 	
-	var results = space.intersect_point(params)
-	if results:
-		return false  # Colliding with something
+	var results = space.intersect_shape(params)
 	
-	## Check if within game bounds (match your nav mesh)
-	#var bounds = Rect2(Vector2(-490, -290), Vector2(980, 580))
-	#if not bounds.has_point(tower.global_position):
-		#return false
-		#
+	
+	
+	
+	if results:
+		return false  # Colliding with towers, base, or bugs
+	
 	return true
 
 func update_tower_buttons():
