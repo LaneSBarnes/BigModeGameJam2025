@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnxj8p7y6uy8k"]
+[gd_scene load_steps=5 format=3 uid="uid://cnxj8p7y6uy8k"]
 
 [ext_resource type="Script" path="res://scenes/towers/solar_panel.gd" id="1_r3p4t"]
 
@@ -7,12 +7,18 @@ colors = PackedColorArray(0.2, 0.4, 1, 1, 0.4, 0.6, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_j7n2r"]
 gradient = SubResource("Gradient_v6xks")
-width = 64
-height = 64
 fill_from = Vector2(0, 1)
 
-[node name="SolarPanel" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_i7537"]
+radius = 54.0
+
+[node name="SolarPanel" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 6
 script = ExtResource("1_r3p4t")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_j7n2r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_i7537")
