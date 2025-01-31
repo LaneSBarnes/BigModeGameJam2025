@@ -53,6 +53,7 @@ autostart = true
 zoom = Vector2(0.5, 0.5)
 
 [node name="TestBug" parent="." instance=ExtResource("3_bug")]
+visible = false
 position = Vector2(-966, 3)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
