@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var spawn_points = $SpawnPoints
 @onready var player_base = $PlayerBase
+@onready var game_over_screen = $CanvasLayer/GameOver
 
 var bug_scenes = [
 	preload("res://scenes/enemies/worker_bug.tscn"),
@@ -10,9 +11,11 @@ var bug_scenes = [
 ]
 
 func _ready():
-	# Add debug prints for navigation setup
-	print("Navigation polygon vertices: ", $NavigationRegion2D.navigation_polygon.vertices)
-	print("Navigation polygon enabled: ", $NavigationRegion2D.enabled)
+	# Make sure game over screen starts hidden
+	if game_over_screen:
+		print("Found game over screen: ", game_over_screen)
+		game_over_screen.visible = false
+		print("Game over visibility after hide: ", game_over_screen.visible)
 	# Connect base signals
 	if player_base:
 		player_base.connect("base_damaged", _on_player_base_damaged)
@@ -75,3 +78,5 @@ func _on_player_base_damaged(current_health: float, max_health: float):
 func _on_player_base_destroyed():
 	print("Base destroyed! Game Over!")
 	$SpawnTimer.stop()
+	if game_over_screen:
+		game_over_screen.show_game_over()
