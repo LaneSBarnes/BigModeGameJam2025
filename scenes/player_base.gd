@@ -5,6 +5,7 @@ signal base_damaged(current_health: float, max_health: float)
 
 @export var max_health: float = 1000.0
 var current_health: float
+var is_destroyed = false
 
 func _ready():
 	print("Player base ready at: ", global_position)
@@ -25,7 +26,8 @@ func take_damage(amount: float) -> void:
 	update_health_display()
 	emit_signal("base_damaged", current_health, max_health)
 	
-	if current_health <= 0:
+	if current_health <= 0 and not is_destroyed:
+		is_destroyed = true
 		destroy()
 
 func update_health_display() -> void:
