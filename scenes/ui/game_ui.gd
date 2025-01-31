@@ -18,6 +18,8 @@ var tower_costs = {
 }
 
 var credits: int = 450  # Starting credits
+var valid_placement_color = Color(0.0, 1.0, 0.0, 0.3)
+var invalid_placement_color = Color(1.0, 0.0, 0.0, 0.3)
 
 @onready var credits_label = $TopBar/HBoxContainer/CreditsInfo/Value
 @onready var day_label = $TopBar/HBoxContainer/DayNightInfo/Label
@@ -49,7 +51,6 @@ func add_credits(amount: int):
 	credits += amount
 	update_credits_display()
 
-
 func setup_tower_buttons():
 	for tower_name in tower_scenes.keys():
 		var button = Button.new()
@@ -70,27 +71,30 @@ func _on_tower_button_pressed(tower_name: String):
 	dragging_tower = tower_scene.instantiate()
 	get_parent().add_child(dragging_tower)
 	dragging_tower.modulate.a = 0.5
-
+	# Set initial position to mouse
+	dragging_tower.global_position = get_mouse_position()
 
 func get_mouse_position() -> Vector2:
-	# Get the viewport and camera
-	var viewport = get_tree().root.get_viewport()
 	var camera = get_parent().get_node("Camera2D")
 	
 	if camera:
-		# Get the raw mouse position in the viewport
-		var mouse_pos = viewport.get_mouse_position()
-		# Convert to global space considering camera zoom and offset
-		return camera.get_screen_to_canvas(mouse_pos)
+		# Get mouse position in viewport coordinates
+		var mouse_pos = get_viewport().get_mouse_position()
+		# Get the viewport size
+		var viewport_size = get_viewport().get_visible_rect().size
+		# Get position relative to camera
+		var camera_pos = camera.global_position
+		# Apply camera zoom and center offset
+		return camera_pos + (mouse_pos - viewport_size/2) / camera.zoom
 	else:
-		# Fallback to viewport mouse position if no camera
-		return viewport.get_mouse_position()
-
+		return get_viewport().get_mouse_position()
 
 func _unhandled_input(event):
 	if dragging_tower:
 		if event is InputEventMouseMotion:
 			dragging_tower.global_position = get_mouse_position()
+			var can_place = can_place_tower(dragging_tower)
+			dragging_tower.modulate = valid_placement_color if can_place else invalid_placement_color
 		
 		elif event.is_action_pressed("mouse_left"):
 			# Check if position is valid
@@ -104,18 +108,69 @@ func _unhandled_input(event):
 						
 				credits -= tower_costs[tower_name]
 				update_credits_display()
-				
-				dragging_tower.modulate.a = 1.0
+				dragging_tower.modulate = Color.WHITE
+				# If this is a power-related tower, register it with the power manager
+				if dragging_tower.has_method("get_power_generation") or \
+					dragging_tower.has_method("get_power_storage"):
+					var power_manager = get_parent().get_node_or_null("PowerManager")
+					if power_manager:
+						if dragging_tower.has_method("get_power_generation"):
+							power_manager.register_solar_panel(dragging_tower)
+						if dragging_tower.has_method("get_power_storage"):
+							power_manager.register_battery(dragging_tower)
+							
 				dragging_tower = null
-		
+			else:
+				# Optional: Play invalid placement sound/effect
+				pass
+				
 		elif event.is_action_pressed("mouse_right"):
 			dragging_tower.queue_free()
 			dragging_tower = null
 
 func can_place_tower(tower: Node2D) -> bool:
-	# Add collision checking here
+	# Check if we have enough credits
+	var tower_name = ""
+	for name in tower_scenes.keys():
+		if tower_scenes[name].get_path() == tower.scene_file_path:
+			tower_name = name
+			break
+			
+	if credits < tower_costs[tower_name]:
+		return false
+		
+	# Get physics world
+	var space = get_parent().get_world_2d().direct_space_state
+	
+	# Create overlap test
+	var params = PhysicsPointQueryParameters2D.new()
+	params.position = tower.global_position
+	params.collision_mask = 6  # Check for towers (4) and bugs (2)
+	params.collide_with_areas = true
+	params.collide_with_bodies = true
+	
+	var results = space.intersect_point(params)
+	if results:
+		return false  # Colliding with something
+	
+	## Check if within game bounds (match your nav mesh)
+	#var bounds = Rect2(Vector2(-490, -290), Vector2(980, 580))
+	#if not bounds.has_point(tower.global_position):
+		#return false
+		#
 	return true
 
+func update_tower_buttons():
+	for tower_name in tower_costs.keys():
+		for button in tower_buttons.get_children():
+			if button.text.begins_with(tower_name):
+				button.disabled = credits < tower_costs[tower_name]
+				# Optional: Update button appearance based on affordability
+				button.modulate = Color.WHITE if credits >= tower_costs[tower_name] else Color(0.5, 0.5, 0.5)
+
+func _process(_delta):
+	if tower_buttons.get_child_count() > 0:
+		update_tower_buttons()
 
 func _on_cycle_tick(time_remaining: float, is_day: bool):
 	var total_duration = day_night_manager.DAY_DURATION if is_day else day_night_manager.NIGHT_DURATION
