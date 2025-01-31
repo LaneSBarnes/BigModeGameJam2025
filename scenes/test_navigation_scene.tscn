@@ -1,17 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbn6rg0yjknx7"]
+[gd_scene load_steps=7 format=3 uid="uid://dbn6rg0yjknx7"]
 
 [ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/player_base.tscn" id="2_base"]
+[ext_resource type="PackedScene" uid="uid://cqxeekpeiqctp" path="res://scenes/ui/game_ui.tscn" id="2_mfq6i"]
 [ext_resource type="PackedScene" uid="uid://b8r7x8g5y2m6k" path="res://scenes/enemies/worker_bug.tscn" id="3_bug"]
 [ext_resource type="PackedScene" uid="uid://dw7x8g5y2m6k" path="res://scenes/ui/game_over.tscn" id="4_jtcuv"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
-vertices = PackedVector2Array(-500, -300, 500, -300, 500, 300, -500, 300)
+vertices = PackedVector2Array(490, 290, -490, 290, -490, -290, 490, -290)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-500, -300, 500, -300, 500, 300, -500, 300)])
 
 [node name="TestNavigationScene" type="Node2D"]
 script = ExtResource("1_script")
+
+[node name="GameUI" parent="." instance=ExtResource("2_mfq6i")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

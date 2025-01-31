@@ -1,0 +1,93 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqxeekpeiqctp"]
+
+[ext_resource type="Script" path="res://scenes/ui/game_ui.gd" id="1_ui"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0, 0, 0, 0.5)
+
+[node name="GameUI" type="CanvasLayer"]
+script = ExtResource("1_ui")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="DayNightInfo" type="VBoxContainer" parent="TopBar/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopBar/HBoxContainer/DayNightInfo"]
+layout_mode = 2
+text = "Day 1"
+horizontal_alignment = 1
+
+[node name="TimeProgress" type="ProgressBar" parent="TopBar/HBoxContainer/DayNightInfo"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PowerInfo" type="VBoxContainer" parent="TopBar/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="SolarPower" type="HBoxContainer" parent="TopBar/HBoxContainer/PowerInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopBar/HBoxContainer/PowerInfo/SolarPower"]
+layout_mode = 2
+text = "Solar:"
+
+[node name="Value" type="Label" parent="TopBar/HBoxContainer/PowerInfo/SolarPower"]
+layout_mode = 2
+text = "0.0"
+
+[node name="StoredPower" type="HBoxContainer" parent="TopBar/HBoxContainer/PowerInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopBar/HBoxContainer/PowerInfo/StoredPower"]
+layout_mode = 2
+text = "Stored:"
+
+[node name="Value" type="Label" parent="TopBar/HBoxContainer/PowerInfo/StoredPower"]
+layout_mode = 2
+text = "0.0"
+
+[node name="CreditsInfo" type="HBoxContainer" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopBar/HBoxContainer/CreditsInfo"]
+layout_mode = 2
+text = "Credits: $"
+
+[node name="Value" type="Label" parent="TopBar/HBoxContainer/CreditsInfo"]
+layout_mode = 2
+text = "450"
+
+[node name="TowerPanel" type="PanelContainer" parent="."]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TowerPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="TowerPanel/VBoxContainer"]
+layout_mode = 2
+text = "Towers"
+horizontal_alignment = 1
+
+[node name="TowerButtons" type="VBoxContainer" parent="TowerPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
