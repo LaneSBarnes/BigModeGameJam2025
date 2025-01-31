@@ -2,7 +2,8 @@ extends Node2D
 
 @onready var spawn_points = $SpawnPoints
 @onready var player_base = $PlayerBase
-@onready var game_over_screen = $CanvasLayer/GameOver
+@onready var game_ui = $GameUI
+@onready var game_over = $CanvasLayer/GameOver
 
 var bug_scenes = [
 	preload("res://scenes/enemies/worker_bug.tscn"),
@@ -11,11 +12,9 @@ var bug_scenes = [
 ]
 
 func _ready():
-	# Make sure game over screen starts hidden
-	if game_over_screen:
-		print("Found game over screen: ", game_over_screen)
-		game_over_screen.visible = false
-		print("Game over visibility after hide: ", game_over_screen.visible)
+	print("Test scene initializing...")
+	if game_over:
+		game_over.visible = false
 	# Connect base signals
 	if player_base:
 		player_base.connect("base_damaged", _on_player_base_damaged)
@@ -64,9 +63,11 @@ func spawn_bug():
 	if is_instance_valid(bug) and is_instance_valid(player_base):
 		print("Setting target for bug: ", player_base.global_position)
 		bug.set_target(player_base.global_position)
-		
-func _on_bug_died(credits: int):
-	print("Bug died! Earned ", credits, " credits")
+
+func _on_bug_died(credits_amount: int):
+	print("Bug died! Earned ", credits_amount, " credits")
+	if game_ui:
+		game_ui.add_credits(credits_amount)
 	
 func _on_bug_reached_base():
 	print("Bug reached the base!")
@@ -78,5 +79,7 @@ func _on_player_base_damaged(current_health: float, max_health: float):
 func _on_player_base_destroyed():
 	print("Base destroyed! Game Over!")
 	$SpawnTimer.stop()
-	if game_over_screen:
-		game_over_screen.show_game_over()
+	if game_ui:
+		game_ui.visible = false
+	if game_over:
+		game_over.show_game_over()

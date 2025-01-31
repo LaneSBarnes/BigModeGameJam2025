@@ -12,21 +12,21 @@ class_name BaseTower
 var power_source = null
 
 func _ready():
-    pass
+	pass
 
 func process_power(delta: float) -> void:
-    pass
+	pass
 
 func take_damage(amount: int) -> void:
-    durability -= amount
-    if durability <= 0:
-        queue_free()
+	durability -= amount
+	if durability <= 0:
+		queue_free()
 
 func get_power_needs() -> float:
-    return power_usage
+	return power_usage
 
 func get_power_generation() -> float:
-    return power_generation
+	return power_generation
 
 func get_power_storage() -> float:
-    return power_storage
+	return power_storage
