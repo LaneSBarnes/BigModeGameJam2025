@@ -15,6 +15,7 @@ radius = 54.0
 
 [node name="BasicTurret" type="StaticBody2D"]
 collision_layer = 8
+collision_mask = 6
 script = ExtResource("1_t3p4t")
 
 [node name="Base" type="Sprite2D" parent="."]
