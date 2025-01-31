@@ -10,32 +10,51 @@ var bug_scenes = [
 	preload("res://scenes/enemies/soldier_bug.tscn"),
 	preload("res://scenes/enemies/scout_bug.tscn")
 ]
+# Wave settings
+var base_bugs_per_night: int = 5
+var bugs_increment_per_night: int = 2
+var bugs_remaining_in_wave: int = 0
+@onready var day_night_manager = $DayNightManager
 
 func _ready():
 	print("Test scene initializing...")
 	if game_over:
 		game_over.visible = false
+	
 	# Connect base signals
 	if player_base:
 		player_base.connect("base_damaged", _on_player_base_damaged)
 		player_base.connect("base_destroyed", _on_player_base_destroyed)
 	
-	# Set up the test bug after a short delay
-	call_deferred("setup_test_bug")
+	# Connect day/night signals
+	if day_night_manager:
+		day_night_manager.day_started.connect(_on_day_started)
+		day_night_manager.night_started.connect(_on_night_started)
+	$SpawnTimer.stop()
+	
+func _on_day_started():
+	print("Day started - Stopping spawns")
+	$SpawnTimer.stop()
 
-func setup_test_bug():
-	await get_tree().physics_frame
-	if has_node("TestBug"):
-		var test_bug = $TestBug
-		# Make sure the bug is at the correct starting position
-		test_bug.global_position = Vector2(-450, 0)
-		await get_tree().physics_frame
-		test_bug.set_target(player_base.global_position)
+func _on_night_started():
+	print("Night started - Beginning wave")
+	start_wave()
 
+func start_wave():
+	var current_cycle = day_night_manager.get_current_cycle()
+	bugs_remaining_in_wave = base_bugs_per_night + (bugs_increment_per_night * (current_cycle - 1))
+	print("Starting wave with ", bugs_remaining_in_wave, " bugs")
+	$SpawnTimer.start()
+	
 func _on_spawn_timer_timeout():
 	spawn_bug()
 
 func spawn_bug():
+	if bugs_remaining_in_wave <= 0:
+		$SpawnTimer.stop()
+		return
+	print("Spawning bug. Remaining in wave: ", bugs_remaining_in_wave)
+
 	# Get a random spawn point
 	var spawn_points_array = spawn_points.get_children()
 	var spawn_point = spawn_points_array[randi() % spawn_points_array.size()]
@@ -64,6 +83,8 @@ func spawn_bug():
 		print("Setting target for bug: ", player_base.global_position)
 		bug.set_target(player_base.global_position)
 
+	bugs_remaining_in_wave -= 1
+	print("Bugs remaining in wave: ", bugs_remaining_in_wave)
 func _on_bug_died(credits_amount: int):
 	print("Bug died! Earned ", credits_amount, " credits")
 	if game_ui:
