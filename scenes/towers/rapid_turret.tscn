@@ -1,37 +1,38 @@
-[gd_scene load_steps=5 format=3 uid="uid://dx7x8g5y2m6k"]
+[gd_scene load_steps=5 format=3 uid="uid://dkwx1yfrm8n6p"]
 
-[ext_resource type="Script" path="res://scenes/towers/rapid_turret.gd" id="1_u3p4t"]
+[ext_resource type="Script" path="res://scenes/towers/rapid_turret.gd" id="1_rapid"]
 
-[sub_resource type="Gradient" id="Gradient_s5xks"]
-colors = PackedColorArray(1, 0.6, 0.2, 1, 1, 0.8, 0.4, 1)
+[sub_resource type="Gradient" id="Gradient_r5xks"]
+colors = PackedColorArray(1, 0.8, 0.2, 1, 1, 0.9, 0.4, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_p7n2r"]
-gradient = SubResource("Gradient_s5xks")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_n7n2r"]
+gradient = SubResource("Gradient_r5xks")
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_4axfn"]
-radius = 54.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_6c4y8"]
+radius = 48.0
 
 [node name="RapidTurret" type="StaticBody2D"]
 collision_layer = 8
 collision_mask = 6
-script = ExtResource("1_u3p4t")
+script = ExtResource("1_rapid")
 
 [node name="Base" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_p7n2r")
+texture = SubResource("GradientTexture2D_n7n2r")
 
-[node name="Barrel1" type="ColorRect" parent="."]
-offset_left = -12.0
-offset_top = -32.0
-offset_right = -4.0
-color = Color(0.8, 0.6, 0.2, 1)
-
-[node name="Barrel2" type="ColorRect" parent="."]
-offset_left = 4.0
-offset_top = -32.0
-offset_right = 12.0
-color = Color(0.8, 0.6, 0.2, 1)
+[node name="Barrel" type="ColorRect" parent="."]
+offset_left = -2.0
+offset_top = -24.0
+offset_right = 2.0
+color = Color(0.8, 0.7, 0.2, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_4axfn")
+shape = SubResource("CircleShape2D_6c4y8")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_6c4y8")
