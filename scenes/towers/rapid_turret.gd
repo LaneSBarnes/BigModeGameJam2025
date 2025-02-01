@@ -35,6 +35,9 @@ func _ready():
 	default_rotation = barrel.rotation
 
 func _process(delta):
+		# Skip all processing if tower is being placed
+	if modulate.a < 1.0:
+		return
 	time_since_last_shot += delta
 	
 	# Update target if it's no longer valid

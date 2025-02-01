@@ -1,9 +1,9 @@
 extends BaseTower
 
-@export var damage: int = 8
-@export var range: float = 30.0
-@export var fire_rate: float = 3.0  # shots per second
-@export var rotation_speed: float = 15.0  # radians per second
+@export var damage: int = 10
+@export var range: float = 4.0
+@export var fire_rate: float = 1.0  # shots per second
+@export var rotation_speed: float = 5.0  # radians per second
 
 var time_since_last_shot: float = 0.0
 var current_target: BaseBug = null
@@ -20,19 +20,31 @@ func _ready():
 	power_usage = 5  # per shot
 	durability = 100
 	
-	# Connect detection area signals
-	detection_area.body_entered.connect(_on_detection_area_body_entered)
-	detection_area.body_exited.connect(_on_detection_area_body_exited)
-	
-	# Update detection area radius
+	# Setup detection area
+	var area = Area2D.new()
+	area.name = "DetectionArea"
+	var collision_shape = CollisionShape2D.new()
 	var circle_shape = CircleShape2D.new()
 	circle_shape.radius = range * 16  # Convert to pixels
-	detection_area.get_node("CollisionShape2D").shape = circle_shape
+	collision_shape.shape = circle_shape
+	area.add_child(collision_shape)
+	add_child(area)
+	
+	# Connect detection area signals
+	area.body_entered.connect(_on_detection_area_body_entered)
+	area.body_exited.connect(_on_detection_area_body_exited)
+	
+	# Set collision masks
+	area.collision_layer = 0
+	area.collision_mask = 2  # Layer for bugs
 	
 	# Store default rotation
 	default_rotation = barrel.rotation
 
 func _process(delta):
+	# Skip all processing if tower is being placed
+	if modulate.a < 1.0:
+		return
 	time_since_last_shot += delta
 	
 	# Update target if it's no longer valid
@@ -75,7 +87,7 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
 		current_target = find_new_target()
 
 func find_new_target() -> BaseBug:
-	var potential_targets = detection_area.get_overlapping_bodies()
+	var potential_targets = get_node("DetectionArea").get_overlapping_bodies()
 	var closest_target: BaseBug = null
 	var closest_distance = INF
 	
