@@ -66,6 +66,9 @@ func _process(delta):
 	else:
 		# Return to default rotation when no target
 		barrel.rotation = lerp_angle(barrel.rotation, default_rotation, rotation_speed * delta)
+	
+	update_power_display()
+	print("turret power: " + str(power))
 
 func attempt_fire() -> void:
 	if current_target and is_instance_valid(current_target):
@@ -105,3 +108,9 @@ func get_attack_range() -> float:
 
 func get_damage() -> int:
 	return damage
+
+func update_power_display() -> void:
+	if has_node("PowerBar"):
+		$PowerBar.max_value = power_storage
+		$PowerBar.value = power
+		$PowerBar.modulate = Color(0, 1, 1)

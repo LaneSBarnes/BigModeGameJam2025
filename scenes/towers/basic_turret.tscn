@@ -17,6 +17,7 @@ radius = 54.0
 collision_layer = 8
 collision_mask = 6
 script = ExtResource("1_t3p4t")
+power_storage = 10.0
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = SubResource("GradientTexture2D_n7n2r")
@@ -36,3 +37,10 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
 shape = SubResource("CircleShape2D_6c4y8")
+
+[node name="PowerBar" type="ProgressBar" parent="."]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -35.0
+show_percentage = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbn6rg0yjknx7"]
+[gd_scene load_steps=11 format=3 uid="uid://dbn6rg0yjknx7"]
 
 [ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dk7x8g5y2m6k" path="res://scenes/player_base.tscn" id="2_base"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://dw7x8g5y2m6k" path="res://scenes/ui/game_over.tscn" id="4_jtcuv"]
 [ext_resource type="Script" path="res://scripts/time_modulation.gd" id="6_m5ltl"]
 [ext_resource type="Script" path="res://scripts/day_night_manager.gd" id="6_vosdc"]
+[ext_resource type="PackedScene" uid="uid://b4r7x8g5y2m6k" path="res://scenes/towers/battery.tscn" id="7_620ee"]
+[ext_resource type="PackedScene" uid="uid://cnxj8p7y6uy8k" path="res://scenes/towers/solar_panel.tscn" id="8_bwxai"]
+[ext_resource type="PackedScene" uid="uid://c8r7x8g5y2m6k" path="res://scenes/towers/basic_turret.tscn" id="9_twsbj"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
 vertices = PackedVector2Array(490, 290, -490, 290, -490, -290, 490, -290)
@@ -59,5 +62,16 @@ script = ExtResource("6_vosdc")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 script = ExtResource("6_m5ltl")
+
+[node name="Battery" parent="." node_paths=PackedStringArray("outputs") instance=ExtResource("7_620ee")]
+position = Vector2(251, 166)
+outputs = [NodePath("../BasicTurret")]
+
+[node name="SolarPanel" parent="." node_paths=PackedStringArray("outputs") instance=ExtResource("8_bwxai")]
+position = Vector2(94, 211)
+outputs = [NodePath("../Battery")]
+
+[node name="BasicTurret" parent="." instance=ExtResource("9_twsbj")]
+position = Vector2(400, 110)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

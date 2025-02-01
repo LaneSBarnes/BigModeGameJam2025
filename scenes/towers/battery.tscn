@@ -22,3 +22,10 @@ texture = SubResource("GradientTexture2D_k7n2r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_e6m6j")
+
+[node name="PowerBar" type="ProgressBar" parent="."]
+offset_left = -60.0
+offset_top = -45.0
+offset_right = 60.0
+offset_bottom = -35.0
+show_percentage = false

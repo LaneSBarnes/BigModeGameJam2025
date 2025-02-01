@@ -14,6 +14,9 @@ class_name BaseTower
 func _ready():
 	pass
 
+func _process(delta: float) -> void:
+	process_power(delta)
+
 func process_power(delta: float) -> void:
 	if (power > 0):
 		# Filter out any outputs that are already full on power
