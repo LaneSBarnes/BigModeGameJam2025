@@ -3,7 +3,7 @@ extends BaseBug
 func _ready():
 	base_health = 30
 	base_speed = 150  # Fast speed
-	credit_reward = 35
+	credit_reward = 65
 	special_ability = "Dodge"
 	super._ready()  # Call parent _ready() to apply day scaling
 	

@@ -1,8 +1,8 @@
 extends BaseTower
 
-@export var damage: int = 5
-@export var range: float = 24.0
-@export var fire_rate: float = 5.0  # shots per second
+@export var damage: int = 15
+@export var range: float = 60.0
+@export var fire_rate: float = 6.0  # shots per second
 @export var rotation_speed: float = 25.0  # Fast rotation for rapid firing
 @export var minimum_range: float = 1.0  # Minimum range to start firing
 @export var angle_threshold: float = 0.2  # Base angle threshold for firing
@@ -13,13 +13,14 @@ var projectile_scene = preload("res://scenes/projectiles/rapid_projectile.tscn")
 
 @onready var barrel = $Barrel
 @onready var detection_area = $DetectionArea
+@onready var power_manager = get_parent().get_node("PowerManager")
 
 # Store the default rotation
 var default_rotation: float = 0.0
 
 func _ready():
 	cost = 200
-	power_usage = 3  # per shot
+	power_usage = .2  # per shot
 	durability = 100
 	
 	# Connect detection area signals
@@ -35,7 +36,7 @@ func _ready():
 	default_rotation = barrel.rotation
 
 func _process(delta):
-		# Skip all processing if tower is being placed
+	# Skip all processing if tower is being placed
 	if modulate.a < 1.0:
 		return
 	time_since_last_shot += delta
@@ -69,7 +70,7 @@ func _process(delta):
 		if distance < 32:  # If closer than 32 pixels
 			dynamic_threshold = 0.5  # Much more lenient when very close
 		
-		# Try to fire if conditions are met
+		# Try to fire if conditions are met and we have enough power
 		if time_since_last_shot >= 1.0 / fire_rate:
 			# Always fire if target is very close, regardless of angle
 			if distance < 16:
@@ -82,6 +83,13 @@ func _process(delta):
 		barrel.rotation = lerp_angle(barrel.rotation, default_rotation, rotation_speed * delta)
 
 func attempt_fire() -> void:
+	if not power_manager:
+		return
+		
+	# Check if we have enough power to fire
+	if not power_manager.use_power(power_usage):
+		return  # Not enough power to fire
+		
 	if current_target and is_instance_valid(current_target):
 		# Create projectile slightly away from the barrel to avoid collision
 		var projectile = projectile_scene.instantiate()
