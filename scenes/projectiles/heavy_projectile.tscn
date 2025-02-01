@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck6fodxxo6ms8"]
+
+[ext_resource type="Script" path="res://scenes/projectiles/heavy_projectile.gd" id="1_heavy"]
+
+[sub_resource type="Gradient" id="Gradient_h7k2p"]
+colors = PackedColorArray(0.6, 0.6, 0.8, 1, 0.8, 0.8, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k8m2p"]
+gradient = SubResource("Gradient_h7k2p")
+width = 12
+height = 12
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0.5)
+
+[node name="HeavyProjectile" type="Node2D"]
+script = ExtResource("1_heavy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("GradientTexture2D_k8m2p")
