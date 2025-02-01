@@ -38,7 +38,7 @@ func start_night():
 	cycle_count += 1
 
 func get_cycle_progress() -> float:
-	var total_duration = is_day if DAY_DURATION else NIGHT_DURATION
+	var total_duration = DAY_DURATION if is_day else NIGHT_DURATION
 	return 1.0 - (time_remaining / total_duration)
 
 func get_current_cycle() -> int:

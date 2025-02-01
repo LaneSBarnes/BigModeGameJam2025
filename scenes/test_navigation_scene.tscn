@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbn6rg0yjknx7"]
+[gd_scene load_steps=9 format=3 uid="uid://dbn6rg0yjknx7"]
 
 [ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dk7x8g5y2m6k" path="res://scenes/player_base.tscn" id="2_base"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dw7x8g5y2m6k" path="res://scenes/ui/game_over.tscn" id="4_jtcuv"]
 [ext_resource type="Script" path="res://scripts/time_modulation.gd" id="6_m5ltl"]
 [ext_resource type="Script" path="res://scripts/day_night_manager.gd" id="6_vosdc"]
+[ext_resource type="Script" path="res://scripts/power_manager.gd" id="7_v36lf"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
 vertices = PackedVector2Array(490, 290, -490, 290, -490, -290, 490, -290)
@@ -58,5 +59,8 @@ script = ExtResource("6_vosdc")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 script = ExtResource("6_m5ltl")
+
+[node name="PowerManager" type="Node" parent="."]
+script = ExtResource("7_v36lf")
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
