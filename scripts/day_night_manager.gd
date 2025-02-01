@@ -7,7 +7,7 @@ signal cycle_tick(time_remaining: float, is_day: bool)
 const DAY_DURATION = 30.0  # 30 seconds for testing
 const NIGHT_DURATION = 30.0  # 30 seconds for testing
 
-var is_day: bool = true
+@export var is_day: bool = true
 var time_remaining: float = DAY_DURATION
 var cycle_count: int = 1
 

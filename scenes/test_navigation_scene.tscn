@@ -54,6 +54,7 @@ autostart = true
 zoom = Vector2(0.5, 0.5)
 
 [node name="DayNightManager" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("6_vosdc")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
