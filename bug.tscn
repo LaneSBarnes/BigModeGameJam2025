@@ -5,15 +5,17 @@
 
 [sub_resource type="Curve2D" id="Curve2D_hjmak"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 552, 0, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67.0286, 266.073, 0, 0, 0, 0, 552, 72.6545, 0, 0, 0, 0, 426.814, -73.6364, 0, 0, 0, 0, 257.271, 259.2, 0, 0, 0, 0, 252.343, -69.7091, 0, 0, 0, 0, 0, 0)
 }
-point_count = 3
+point_count = 7
 
 [node name="Bug" type="Node2D"]
 script = ExtResource("1_fa4vi")
 metadata/_edit_group_ = true
 
 [node name="Path2D" type="Path2D" parent="."]
+position = Vector2(0, 1)
+scale = Vector2(1.01449, 1.01852)
 curve = SubResource("Curve2D_hjmak")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
