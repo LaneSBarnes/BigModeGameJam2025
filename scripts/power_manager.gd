@@ -41,23 +41,18 @@ func _on_cycle_tick(time_remaining: float, is_day: bool):
 	update_power_generation()
 
 func _on_transition_complete():
-	print("Transition complete")
-	print("Current solar power: ", current_solar_power)
-	print("Solar efficiency: ", get_current_solar_efficiency())
+
 	is_transitioning = false
 	update_power_generation()
-	print("Power after transition: ", current_solar_power)
-	print("Total stored power: ", get_total_stored_power())
+
 
 func _on_day_started():
-	print("Day started - Transitioning: ", is_transitioning)
-	print("Current solar power before: ", current_solar_power)
+
 	is_transitioning = true
 	is_currently_day = true
 	update_power_generation()
 	transition_timer.start(TRANSITION_DURATION)
-	print("Current solar power after update: ", current_solar_power)
-	print("Total stored power: ", get_total_stored_power())
+
 
 
 func _on_night_started():
@@ -113,15 +108,13 @@ func update_power_generation():
 
 func _on_update_timer_timeout():
 	var power_increment = (current_solar_power / 60.0) * UPDATE_INTERVAL
-	print("Update timer - Power increment: ", power_increment)
-	print("Current solar power: ", current_solar_power)
-	print("Is transitioning: ", is_transitioning)
+
 	
 	if power_increment > 0:
 		var before_stored = get_total_stored_power()
 		distribute_power(power_increment)
 		var after_stored = get_total_stored_power()
-		print("Power distributed - Before: ", before_stored, " After: ", after_stored)
+	
 	
 	emit_signal("power_updated", current_solar_power, get_total_stored_power())
 
