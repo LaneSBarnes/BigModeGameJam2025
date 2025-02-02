@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dox5apt7nfw1i"
-path="res://.godot/imported/blue_ant.png-487c5e7b7006f373826b13f1d46f0d71.ctex"
+uid="uid://bpnkbiqndux5m"
+path="res://.godot/imported/turret_rapid.png-e83781bf99e9d5435df32364f718c4cc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/blue_ant.png"
-dest_files=["res://.godot/imported/blue_ant.png-487c5e7b7006f373826b13f1d46f0d71.ctex"]
+source_file="res://sprites/turret/turret_rapid.png"
+dest_files=["res://.godot/imported/turret_rapid.png-e83781bf99e9d5435df32364f718c4cc.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dox5apt7nfw1i"
-path="res://.godot/imported/blue_ant.png-487c5e7b7006f373826b13f1d46f0d71.ctex"
+uid="uid://bjc02lb3w5ljh"
+path="res://.godot/imported/soalr_panel.png-55af1baaf912c734482b912da648512f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/blue_ant.png"
-dest_files=["res://.godot/imported/blue_ant.png-487c5e7b7006f373826b13f1d46f0d71.ctex"]
+source_file="res://sprites/soalr_panel.png"
+dest_files=["res://.godot/imported/soalr_panel.png-55af1baaf912c734482b912da648512f.ctex"]
 
 [params]
 

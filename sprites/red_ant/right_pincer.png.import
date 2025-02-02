@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dox5apt7nfw1i"
-path="res://.godot/imported/blue_ant.png-487c5e7b7006f373826b13f1d46f0d71.ctex"
+uid="uid://yic33q22tc38"
+path="res://.godot/imported/right_pincer.png-9c07028c1f673f7da93a3df0a71b1f8d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/blue_ant.png"
-dest_files=["res://.godot/imported/blue_ant.png-487c5e7b7006f373826b13f1d46f0d71.ctex"]
+source_file="res://sprites/red_ant/right_pincer.png"
+dest_files=["res://.godot/imported/right_pincer.png-9c07028c1f673f7da93a3df0a71b1f8d.ctex"]
 
 [params]
 
