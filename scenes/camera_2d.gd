@@ -2,12 +2,10 @@ extends Camera2D
 
 @export var zoom_min = Vector2(0.25,0.25)
 @export var zoom_max = Vector2(2,2)
-@export var camera_follow_speed = 0.01
+@export var camera_follow_speed = 0.025
 
-var t = 0.0
-func _physics_process(delta):
-	t += delta * camera_follow_speed
-	position = position.lerp(%Player.position, t)
+func _process(delta):
+	position = position.lerp(%Player.position, camera_follow_speed)
 
 func _input(event: InputEvent) -> void:
 	var zoomTest = zoom
