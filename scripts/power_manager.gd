@@ -12,6 +12,7 @@ var is_transitioning: bool = false
 const UPDATE_INTERVAL = 0.5
 const BASE_SOLAR_EFFICIENCY = 1.0
 const MIN_SOLAR_EFFICIENCY = 0.0
+const MIN_USABLE_POWER = 0.3  
 const TRANSITION_DURATION = 0.5
 
 @onready var day_night_manager = get_parent().get_node("DayNightManager")
@@ -40,20 +41,28 @@ func _on_cycle_tick(time_remaining: float, is_day: bool):
 	update_power_generation()
 
 func _on_transition_complete():
+	print("Transition complete")
+	print("Current solar power: ", current_solar_power)
+	print("Solar efficiency: ", get_current_solar_efficiency())
 	is_transitioning = false
 	update_power_generation()
+	print("Power after transition: ", current_solar_power)
+	print("Total stored power: ", get_total_stored_power())
 
 func _on_day_started():
+	print("Day started - Transitioning: ", is_transitioning)
+	print("Current solar power before: ", current_solar_power)
 	is_transitioning = true
 	is_currently_day = true
-	current_solar_power = 0.0
 	update_power_generation()
 	transition_timer.start(TRANSITION_DURATION)
+	print("Current solar power after update: ", current_solar_power)
+	print("Total stored power: ", get_total_stored_power())
+
 
 func _on_night_started():
 	is_transitioning = true
 	is_currently_day = false
-	current_solar_power = 0.0
 	update_power_generation()
 	transition_timer.start(TRANSITION_DURATION)
 
@@ -89,8 +98,8 @@ func get_current_solar_efficiency() -> float:
 	var day_progress = (total_duration - current_time_remaining) / total_duration
 	
 	var efficiency = BASE_SOLAR_EFFICIENCY * (1.0 - pow(2.0 * (day_progress - 0.5), 2))
-	return max(0.0, efficiency)
-
+	efficiency = max(0.0, efficiency)
+	return efficiency
 func update_power_generation():
 	var total_generation = 0.0
 	var efficiency = get_current_solar_efficiency()
@@ -103,41 +112,48 @@ func update_power_generation():
 	emit_signal("power_updated", current_solar_power, get_total_stored_power())
 
 func _on_update_timer_timeout():
-	if is_transitioning:
-		return
-		
 	var power_increment = (current_solar_power / 60.0) * UPDATE_INTERVAL
+	print("Update timer - Power increment: ", power_increment)
+	print("Current solar power: ", current_solar_power)
+	print("Is transitioning: ", is_transitioning)
+	
 	if power_increment > 0:
+		var before_stored = get_total_stored_power()
 		distribute_power(power_increment)
+		var after_stored = get_total_stored_power()
+		print("Power distributed - Before: ", before_stored, " After: ", after_stored)
+	
 	emit_signal("power_updated", current_solar_power, get_total_stored_power())
 
 func distribute_power(amount: float) -> void:
-	# If no batteries, nowhere to store power
 	if batteries.is_empty():
 		return
 		
 	var remaining_power = amount
+	var total_added = 0.0
 	
-	# Try to distribute power evenly among batteries
-	while remaining_power > 0:
-		var power_per_battery = remaining_power / batteries.size()
-		var total_added = 0.0
-		
-		for battery in batteries:
-			if is_instance_valid(battery):
-				var added = battery.add_charge(power_per_battery)
-				total_added += added
-		
-		if total_added == 0:
-			break
+	# Sort batteries by how much space they have left
+	var sorted_batteries = batteries.duplicate()
+	sorted_batteries.sort_custom(func(a, b): 
+		return (a.power_storage - a.current_charge) > (b.power_storage - b.current_charge)
+	)
+	
+	# Distribute power to batteries with most space first
+	for battery in sorted_batteries:
+		if is_instance_valid(battery):
+			var added = battery.add_charge(remaining_power)
+			total_added += added
+			remaining_power -= added
 			
-		remaining_power -= total_added
+			if remaining_power <= 0:
+				break
 
 func use_power(amount: float) -> bool:
-	if is_transitioning:
-		return false
-	
 	if batteries.is_empty():
+		return false
+		
+	# Don't allow power usage if total stored power is too low
+	if get_total_stored_power() < MIN_USABLE_POWER:
 		return false
 		
 	var power_needed = amount
