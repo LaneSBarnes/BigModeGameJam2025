@@ -14,6 +14,7 @@ var target_position: Vector2
 var has_reached_base: bool = false
 
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
+@onready var sprite: Sprite2D = $Sprite2D
 
 signal bug_died(credits: int)
 signal reached_base
@@ -57,9 +58,13 @@ func _physics_process(delta):
 		velocity = direction * current_speed
 		move_and_slide()
 		
-		# Only rotate the sprite to face movement direction
-		if has_node("Sprite2D"):
-			$Sprite2D.rotation = velocity.angle()
+# Only rotate the sprite to face movement direction
+	if has_node("Sprite2D"):
+		var sprite = get_node("Sprite2D")
+		# Calculate the angle to the next position
+		var angle = global_position.direction_to(next_position).angle()
+		# Set the sprite's rotation
+		sprite.rotation = angle
 		
 	else:
 		print("No valid direction found")

@@ -1,13 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4r7x8g5y2m6k"]
+[gd_scene load_steps=4 format=3 uid="uid://b4r7x8g5y2m6k"]
 
 [ext_resource type="Script" path="res://scenes/towers/battery.gd" id="1_b2p4t"]
-
-[sub_resource type="Gradient" id="Gradient_l5xks"]
-colors = PackedColorArray(0.4, 1, 0.2, 1, 0.6, 1, 0.4, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_k7n2r"]
-gradient = SubResource("Gradient_l5xks")
-fill_from = Vector2(0, 1)
+[ext_resource type="Texture2D" uid="uid://b2s2n8srvatsd" path="res://sprites/battery.png" id="2_t42t4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e6m6j"]
 radius = 54.0
@@ -18,7 +12,8 @@ collision_mask = 6
 script = ExtResource("1_b2p4t")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_k7n2r")
+scale = Vector2(0.11, 0.11)
+texture = ExtResource("2_t42t4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_e6m6j")
