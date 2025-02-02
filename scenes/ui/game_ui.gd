@@ -21,6 +21,8 @@ var credits: int = 450  # Starting credits
 var valid_placement_color = Color(0.0, 1.0, 0.0, 0.3)
 var invalid_placement_color = Color(1.0, 0.0, 0.0, 0.3)
 
+const PLACEMENT_DISTANCE = 140.0  # Distance in front of player to place tower
+
 @onready var credits_label = $TopBar/HBoxContainer/CreditsInfo/Value
 @onready var day_label = $TopBar/HBoxContainer/DayNightInfo/Label
 @onready var time_progress = $TopBar/HBoxContainer/DayNightInfo/TimeProgress
@@ -71,32 +73,26 @@ func _on_tower_button_pressed(tower_name: String):
 	dragging_tower = tower_scene.instantiate()
 	get_parent().add_child(dragging_tower)
 	dragging_tower.modulate.a = 0.5
-	# Set initial position to mouse
-	dragging_tower.global_position = get_mouse_position()
+	# Set initial position to in front of player
+	update_tower_position()
 
-func get_mouse_position() -> Vector2:
-	var camera = get_parent().get_node("Camera2D")
-	
-	if camera:
-		# Get mouse position in viewport coordinates
-		var mouse_pos = get_viewport().get_mouse_position()
-		# Get the viewport size
-		var viewport_size = get_viewport().get_visible_rect().size
-		# Get position relative to camera
-		var camera_pos = camera.global_position
-		# Apply camera zoom and center offset
-		return camera_pos + (mouse_pos - viewport_size/2) / camera.zoom
-	else:
-		return get_viewport().get_mouse_position()
+func get_placement_position() -> Vector2:
+	var player = get_parent().get_node("Player")
+	if player:
+		# Calculate position in front of player using their rotation
+		var offset = Vector2.RIGHT.rotated(player.rotation) * PLACEMENT_DISTANCE
+		return player.global_position + offset
+	return Vector2.ZERO
+
+func update_tower_position():
+	if dragging_tower:
+		dragging_tower.global_position = get_placement_position()
+		var can_place = can_place_tower(dragging_tower)
+		dragging_tower.modulate = valid_placement_color if can_place else invalid_placement_color
 
 func _unhandled_input(event):
 	if dragging_tower:
-		if event is InputEventMouseMotion:
-			dragging_tower.global_position = get_mouse_position()
-			var can_place = can_place_tower(dragging_tower)
-			dragging_tower.modulate = valid_placement_color if can_place else invalid_placement_color
-		
-		elif event.is_action_pressed("mouse_left"):
+		if event.is_action_pressed("mouse_left"):
 			# Check if position is valid
 			if can_place_tower(dragging_tower):
 				# Deduct cost when placing
@@ -164,9 +160,6 @@ func can_place_tower(tower: Node2D) -> bool:
 	
 	var results = space.intersect_shape(params)
 	
-	
-	
-	
 	if results:
 		return false  # Colliding with towers, base, or bugs
 	
@@ -183,6 +176,8 @@ func update_tower_buttons():
 func _process(_delta):
 	if tower_buttons.get_child_count() > 0:
 		update_tower_buttons()
+	if dragging_tower:
+		update_tower_position()
 
 func _on_cycle_tick(time_remaining: float, is_day: bool):
 	var total_duration = day_night_manager.DAY_DURATION if is_day else day_night_manager.NIGHT_DURATION
