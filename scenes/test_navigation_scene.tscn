@@ -1,13 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://dbn6rg0yjknx7"]
+[gd_scene load_steps=12 format=3 uid="uid://dbn6rg0yjknx7"]
 
 [ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dk7x8g5y2m6k" path="res://scenes/player_base.tscn" id="2_base"]
 [ext_resource type="PackedScene" uid="uid://cqxeekpeiqctp" path="res://scenes/ui/game_ui.tscn" id="2_mfq6i"]
 [ext_resource type="PackedScene" uid="uid://dw7x8g5y2m6k" path="res://scenes/ui/game_over.tscn" id="4_jtcuv"]
 [ext_resource type="Script" path="res://scripts/time_modulation.gd" id="6_m5ltl"]
+[ext_resource type="Script" path="res://scenes/camera_2d.gd" id="6_twmif"]
 [ext_resource type="Script" path="res://scripts/day_night_manager.gd" id="6_vosdc"]
 [ext_resource type="Script" path="res://scripts/power_manager.gd" id="7_v36lf"]
 [ext_resource type="Texture2D" uid="uid://d3svb0u1vmj7y" path="res://sprites/ground.png" id="8_1oeb4"]
+[ext_resource type="PackedScene" uid="uid://biyu18u0mc63q" path="res://scenes/player.tscn" id="10_tmt14"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_1"]
 vertices = PackedVector2Array(490, 290, -490, 290, -490, -290, 490, -290)
@@ -67,9 +69,6 @@ position = Vector2(-395, 584)
 wait_time = 2.0
 autostart = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
-
 [node name="DayNightManager" type="Node" parent="."]
 script = ExtResource("6_vosdc")
 
@@ -78,5 +77,12 @@ script = ExtResource("6_m5ltl")
 
 [node name="PowerManager" type="Node" parent="."]
 script = ExtResource("7_v36lf")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("6_twmif")
+
+[node name="Player" parent="." instance=ExtResource("10_tmt14")]
+unique_name_in_owner = true
+position = Vector2(171, 112)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
