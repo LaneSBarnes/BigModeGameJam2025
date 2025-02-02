@@ -15,5 +15,6 @@ script = ExtResource("1_r83bv")
 shape = SubResource("CircleShape2D_djgoc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
 scale = Vector2(0.17, 0.17)
 texture = ExtResource("2_eqosh")
