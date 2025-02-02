@@ -9,9 +9,9 @@ var day_colors = [
 
 # Night colors: Deep blue -> Dark purple -> Dark blue
 var night_colors = [
-	Color(0.3, 0.3, 0.5),  # Twilight
-	Color(0.2, 0.2, 0.4),  # Deep night
-	Color(0.15, 0.15, 0.35) # Late night
+	Color(0.35, 0.35, 0.55),  # Twilight
+	Color(0.25, 0.25, 0.45),  # Deep night
+	Color(0.2, 0.2, 0.4) # Late night
 ]
 
 var current_colors: Array
