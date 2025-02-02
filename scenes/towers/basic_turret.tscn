@@ -1,14 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://c8r7x8g5y2m6k"]
 
 [ext_resource type="Script" path="res://scenes/towers/basic_turret.gd" id="1_t3p4t"]
-
-[sub_resource type="Gradient" id="Gradient_r5xks"]
-colors = PackedColorArray(1, 0.2, 0.2, 1, 1, 0.4, 0.4, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_n7n2r"]
-gradient = SubResource("Gradient_r5xks")
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
+[ext_resource type="Texture2D" uid="uid://bnf275kesbciv" path="res://sprites/turret_base.png" id="2_36xry"]
+[ext_resource type="Texture2D" uid="uid://dplvtd3f543fq" path="res://sprites/turret_regular.png" id="3_57eck"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6c4y8"]
 radius = 54.0
@@ -19,13 +13,12 @@ collision_mask = 6
 script = ExtResource("1_t3p4t")
 
 [node name="Base" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_n7n2r")
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("2_36xry")
 
-[node name="Barrel" type="ColorRect" parent="."]
-offset_left = -4.0
-offset_top = -32.0
-offset_right = 4.0
-color = Color(0.8, 0.2, 0.2, 1)
+[node name="Barrel" type="Sprite2D" parent="."]
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("3_57eck")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_6c4y8")
