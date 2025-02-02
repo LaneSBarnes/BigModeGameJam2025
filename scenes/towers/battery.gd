@@ -5,7 +5,7 @@ var current_charge: float = 0
 
 func _ready():
 	cost = 200
-	power_storage = 20  # Set the inherited power_storage value
+	power_storage = 20
 	durability = 150
 
 func get_charge() -> float:
