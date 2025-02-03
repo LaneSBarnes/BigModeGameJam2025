@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://dbn6rg0yjknx7"]
+[gd_scene load_steps=15 format=3 uid="uid://dbn6rg0yjknx7"]
 
 [ext_resource type="Script" path="res://scenes/test_navigation_scene.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://dk7x8g5y2m6k" path="res://scenes/player_base.tscn" id="2_base"]
 [ext_resource type="PackedScene" uid="uid://cqxeekpeiqctp" path="res://scenes/ui/game_ui.tscn" id="2_mfq6i"]
 [ext_resource type="Script" path="res://scripts/navigation_manager.gd" id="2_tqits"]
+[ext_resource type="Script" path="res://scripts/ground_scaler.gd" id="4_fcv0w"]
 [ext_resource type="PackedScene" uid="uid://dw7x8g5y2m6k" path="res://scenes/ui/game_over.tscn" id="4_jtcuv"]
 [ext_resource type="Script" path="res://scripts/time_modulation.gd" id="6_m5ltl"]
 [ext_resource type="Script" path="res://scenes/camera_2d.gd" id="6_twmif"]
@@ -12,27 +13,13 @@
 [ext_resource type="Texture2D" uid="uid://d3svb0u1vmj7y" path="res://sprites/ground.png" id="8_1oeb4"]
 [ext_resource type="Script" path="res://scripts/navigation_path.gd" id="9_navpath"]
 [ext_resource type="PackedScene" uid="uid://biyu18u0mc63q" path="res://scenes/player.tscn" id="10_tmt14"]
+[ext_resource type="Script" path="res://scripts/boundary_system.gd" id="13_kyenw"]
 
 [node name="TestNavigationScene" type="Node2D"]
 script = ExtResource("1_script")
 
 [node name="NavigationManager" type="Node2D" parent="."]
 script = ExtResource("2_tqits")
-
-[node name="ground" type="TextureRect" parent="."]
-z_index = -10
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1920.0
-offset_top = -1080.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("8_1oeb4")
 
 [node name="GameUI" parent="." instance=ExtResource("2_mfq6i")]
 
@@ -43,11 +30,22 @@ texture = ExtResource("8_1oeb4")
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="SpawnPoint1" type="Marker2D" parent="SpawnPoints"]
-position = Vector2(-1064, 6)
+position = Vector2(-1624, -4)
 
 [node name="Path" type="Line2D" parent="SpawnPoints/SpawnPoint1"]
-position = Vector2(-308, 3)
-points = PackedVector2Array(310, 4, 132, 222, 225, 406, 302, 516, 406, 629, 494, 536, 635, 451, 828, 392, 1057, 420, 1080, 267, 1368, -7)
+position = Vector2(152, -516)
+scale = Vector2(1, 1.01019)
+points = PackedVector2Array(-155, 509.805, 167, 502.875, 228, 485.057, 302, 516, 330, 568, 413, 572.139, 494, 536, 605, 528.583, 669, 490.966, 817, 510.764, 1083, 556.3, 1289, 625.594, 1473, 530.593)
+width = 2.0
+default_color = Color(0.878431, 0, 0.941176, 0.498039)
+script = ExtResource("9_navpath")
+
+[node name="SpawnPoint2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(700, -438)
+
+[node name="Path" type="Line2D" parent="SpawnPoints/SpawnPoint2"]
+position = Vector2(-1108, -370)
+points = PackedVector2Array(1113, 374, 1103, 554, 955, 582, 634, 386, 533, 386, 335, 464, 302, 516, 330, 568, 443, 556, 637, 492, 765, 506, 795, 572, 771, 638, 663, 628, 579, 644, 497, 674, 409, 812)
 width = 2.0
 default_color = Color(0.878431, 0, 0.941176, 0.498039)
 script = ExtResource("9_navpath")
@@ -73,5 +71,26 @@ script = ExtResource("6_twmif")
 [node name="Player" parent="." instance=ExtResource("10_tmt14")]
 unique_name_in_owner = true
 position = Vector2(171, 112)
+
+[node name="Boundary" type="Node2D" parent="."]
+script = ExtResource("13_kyenw")
+boundary_rect = Rect2(-1500, -1500, 3500, 3500)
+show_boundary = false
+
+[node name="ground" type="TextureRect" parent="Boundary"]
+z_index = -10
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1920.0
+offset_top = -1080.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_1oeb4")
+script = ExtResource("4_fcv0w")
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
