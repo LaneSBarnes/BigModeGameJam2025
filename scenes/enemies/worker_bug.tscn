@@ -14,7 +14,7 @@ fill_to = Vector2(1, 0.5)
 
 [node name="WorkerBug" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 10
+collision_mask = 8
 script = ExtResource("1_w3p4t")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

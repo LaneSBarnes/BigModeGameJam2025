@@ -63,7 +63,7 @@ func setup_tower_buttons():
 
 func _on_tower_button_pressed(tower_name: String):
 	if credits < tower_costs[tower_name]:
-		print("Not enough credits for " + tower_name)
+	
 		return
 		
 	if dragging_tower != null:
@@ -143,7 +143,7 @@ func can_place_tower(tower: Node2D) -> bool:
 	# Use the tower's collision shape
 	var collision_shape = tower.get_node("CollisionShape2D")
 	if not collision_shape:
-		print("No collision shape found for tower")
+	
 		return false
 	
 	# Temporarily disable the tower's collision

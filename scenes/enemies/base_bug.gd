@@ -20,10 +20,33 @@ signal bug_died(credits: int)
 signal reached_base
 
 func _ready():
-	print("Bug spawned at: ", global_position)
+
+	
+	# Wait for navigation to be ready
+	await get_tree().create_timer(0.5).timeout
+	
+	# Debug navigation setup
+	var navigation_map = get_world_2d().get_navigation_map()
+	
+
+	
+	# Check if we can find NavigationRegion2D in the scene
+	var nav_regions = get_tree().get_nodes_in_group("navigation_regions")
+	if nav_regions.is_empty():
+		# Try to find any NavigationRegion2D nodes, even if not in group
+		var all_nav_regions = get_tree().get_nodes_in_group("navigation_polygon_source_geometry_group")
+		if not all_nav_regions.is_empty():
+			for region in all_nav_regions:
+				# Add it to the navigation_regions group
+				region.add_to_group("navigation_regions")
+	
+
 	# Calculate health with day scaling (5% increase per day)
 	current_health = base_health * pow(1.05, day_number - 1)
 	current_speed = base_speed
+	
+	# Wait a short moment for navigation to be ready
+	await get_tree().create_timer(0.2).timeout
 	
 	# Update health bar
 	if has_node("HealthBar"):
@@ -32,18 +55,20 @@ func _ready():
 	
 	# Setup navigation with more debug info
 	print("Setting up navigation for bug")
-	nav_agent.path_desired_distance = 4.0  # Reduced back to default
-	nav_agent.target_desired_distance = 4.0  # Reduced back to default
-	nav_agent.radius = 16.0  # Add this line
-	nav_agent.neighbor_distance = 100.0  # Add this line
-	nav_agent.max_neighbors = 10  # Add this line
-	nav_agent.time_horizon = 1.0  # Add this line
+	nav_agent.path_desired_distance = 4.0  # Reduced for tighter path following
+	nav_agent.target_desired_distance = 4.0  # Reduced for tighter path following
+	nav_agent.radius = 4.0  # Reduced for tighter navigation
+	nav_agent.neighbor_distance = 50.0  # Reduced for more individual movement
+	nav_agent.max_neighbors = 5  # Reduced for more individual movement
+	nav_agent.time_horizon = 1.0  # Reduced for more responsive movement
+	nav_agent.avoidance_enabled = false  # Disable avoidance to follow path more closely
+	nav_agent.debug_enabled = false  # Enable debug visualization to see the path
+	nav_agent.max_speed = base_speed
 	nav_agent.max_speed = base_speed
 	nav_agent.avoidance_enabled = true
 
 	# IMPORTANT: Wait for the navigation to be ready
 	await get_tree().create_timer(0.1).timeout  # Add small delay
-	#nav_agent.debug_enabled = true
 
 func _physics_process(delta):
 	if has_reached_base:
@@ -89,6 +114,14 @@ func set_target(target: Vector2) -> void:
 	await get_tree().physics_frame
 	print("Path to target exists: ", nav_agent.is_target_reachable())
 	print("Distance to target: ", nav_agent.distance_to_target())
+	var path = nav_agent.get_current_navigation_path()
+	print("Navigation path points: ", path.size())
+	if path.size() > 0:
+		print("Path start: ", path[0])
+		print("Path end: ", path[-1])
+		# Print intermediate points if any
+		if path.size() > 2:
+			print("Waypoints: ", path.slice(1, -1))
 func take_damage(amount: float) -> void:
 	current_health -= amount
 	if current_health <= 0:
