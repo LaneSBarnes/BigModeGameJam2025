@@ -1,15 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dk7x8g5y2m6k"]
+[gd_scene load_steps=5 format=3 uid="uid://dk7x8g5y2m6k"]
 
 [ext_resource type="Script" path="res://scenes/player_base.gd" id="1_base"]
-
-[sub_resource type="Gradient" id="Gradient_x5xks"]
-colors = PackedColorArray(0.2, 0.4, 0.8, 1, 0.4, 0.6, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_u7n2r"]
-gradient = SubResource("Gradient_x5xks")
-width = 128
-height = 128
-fill_to = Vector2(1, 1)
+[ext_resource type="Texture2D" uid="uid://cwt5ki1pxpr7a" path="res://sprites/pie.png" id="2_5loku"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a8n2r"]
 radius = 91.68
@@ -23,7 +15,8 @@ collision_mask = 8
 script = ExtResource("1_base")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_u7n2r")
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_5loku")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_a8n2r")
