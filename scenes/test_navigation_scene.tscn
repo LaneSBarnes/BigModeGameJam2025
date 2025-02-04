@@ -35,7 +35,7 @@ position = Vector2(-1624, -4)
 [node name="Path" type="Line2D" parent="SpawnPoints/SpawnPoint1"]
 position = Vector2(152, -516)
 scale = Vector2(1, 1.01019)
-points = PackedVector2Array(-155, 509.805, 167, 502.875, 228, 485.057, 302, 516, 330, 568, 413, 572.139, 494, 536, 605, 528.583, 669, 490.966, 817, 510.764, 1083, 556.3, 1289, 625.594, 1473, 530.593)
+points = PackedVector2Array(-155, 509.805, 167, 502.875, 228, 485.057, 302, 516, 330, 568, 413, 572.139, 455, 558.31, 494, 536, 605, 528.583, 669, 490.966, 817, 510.764, 1083, 556.3, 1289, 625.594, 1473, 530.593)
 width = 2.0
 default_color = Color(0.878431, 0, 0.941176, 0.498039)
 script = ExtResource("9_navpath")
@@ -45,7 +45,7 @@ position = Vector2(700, -438)
 
 [node name="Path" type="Line2D" parent="SpawnPoints/SpawnPoint2"]
 position = Vector2(-1108, -370)
-points = PackedVector2Array(1113, 374, 1103, 554, 955, 582, 634, 386, 533, 386, 335, 464, 302, 516, 330, 568, 443, 556, 637, 492, 765, 506, 795, 572, 771, 638, 663, 628, 579, 644, 497, 674, 409, 812)
+points = PackedVector2Array(1113, 374, 1103, 554, 955, 582, 656, 396, 533, 386, 335, 464, 302, 516, 330, 568, 443, 556, 637, 492, 765, 506, 795, 572, 771, 638, 663, 628, 579, 644, 497, 674, 409, 812)
 width = 2.0
 default_color = Color(0.878431, 0, 0.941176, 0.498039)
 script = ExtResource("9_navpath")
